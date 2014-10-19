@@ -1,0 +1,16 @@
+<!--Place Title Caption in between the <h1> tags-->
+
+<h1>
+Curling Equipment
+</h1>
+
+
+<!--Place Photo Caption in between the <p> tags-->
+			
+<p>
+The BCCS helps to promote curling by providing the necessary equipment such as rocks and brooms.
+</p>
+	
+
+<!--Place Optional Link in between the quotes after 'a href' -->		
+<a href="#">Learn More</a>

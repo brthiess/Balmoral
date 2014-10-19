@@ -1,0 +1,16 @@
+<!--Place Title Caption in between the <h1> tags-->
+
+<h1>
+Junior Curling
+</h1>
+
+
+<!--Place Photo Caption in between the <p> tags-->
+
+<p>
+The BCCS supports high performance training and competition for junior aged curlers.
+</p>
+
+
+<!--Place Optional Link in between the quotes after 'a href' -->
+<a href="#">Learn More</a>
