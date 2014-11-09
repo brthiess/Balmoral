@@ -1,3 +1,14 @@
+<?php
+include_once '../includes/db_connect.php';
+
+# Install PSR-0-compatible class autoloader
+spl_autoload_register(function($class){
+	require preg_replace('{\\\\|_(?!.*\\\\)}', DIRECTORY_SEPARATOR, ltrim($class, '\\')).'.php';
+});
+
+# Get Markdown class
+use \Michelf\Markdown;
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <!--
 Design by TEMPLATED
@@ -48,13 +59,19 @@ Released   : 20120817
             <img src="../images/slider3.jpg" alt="Curling Equipment"/>
             </a>
             <div class="tooltip">
-				<?php
-				$myFile = "../text/slider3caption.txt";
-				$fh = fopen($myFile, 'r');
-				$theData = fread($fh, filesize($myFile));
-				fclose($fh);
-				echo $theData;
-				?>
+			<?php
+				$sql = "SELECT Caption, Title, Photo FROM Slider WHERE ID = 3";
+				$result = $mysqli->query($sql);
+
+				if ($result->num_rows > 0) {
+					// output data of each row
+					while($row = $result->fetch_assoc()) {
+						echo "<h1>". $row["Title"]. "</h1>" . "<p>" . $row["Caption"]. "</p>";
+					}
+				} else {
+				echo "0 results";
+				}
+			?>
 
             </div>
             </li>
@@ -65,12 +82,18 @@ Released   : 20120817
             </a>
             <div class="tooltip">
 				<?php
-				$myFile = "../text/slider4caption.txt";
-				$fh = fopen($myFile, 'r');
-				$theData = fread($fh, filesize($myFile));
-				fclose($fh);
-				echo $theData;
-				?>
+				$sql = "SELECT Caption, Title, Photo FROM Slider WHERE ID = 4";
+				$result = $mysqli->query($sql);
+
+				if ($result->num_rows > 0) {
+					// output data of each row
+					while($row = $result->fetch_assoc()) {
+						echo "<h1>". $row["Title"]. "</h1>" . "<p>" . $row["Caption"]. "</p>";
+					}
+				} else {
+				echo "Balmoral Society";
+				}
+			?>
             </div>
             </li>
             
@@ -80,27 +103,39 @@ Released   : 20120817
             </a>
             <div class="tooltip">
 				<?php
-				$myFile = "../text/slider1caption.txt";
-				$fh = fopen($myFile, 'r');
-				$theData = fread($fh, filesize($myFile));
-				fclose($fh);
-				echo $theData;
-				?>
+				$sql = "SELECT Caption, Title, Photo FROM Slider WHERE ID = 1";
+				$result = $mysqli->query($sql);
+
+				if ($result->num_rows > 0) {
+					// output data of each row
+					while($row = $result->fetch_assoc()) {
+						echo "<h1>". $row["Title"]. "</h1>" . "<p>" . $row["Caption"]. "</p>";
+					}
+				} else {
+				echo "0 results";
+				}
+			?>
             </div>
             </li>
-                        f
+                        
             <li id="second" class="secondanimation">
             <a href="#">
             <img src="../images/slider2.jpg" alt="SSC"/>
             </a>
             <div class="tooltip">
 				<?php
-				$myFile = "../text/slider2caption.txt";
-				$fh = fopen($myFile, 'r');
-				$theData = fread($fh, filesize($myFile));
-				fclose($fh);
-				echo $theData;
-				?>
+				$sql = "SELECT Caption, Title, Photo FROM Slider WHERE ID = 2";
+				$result = $mysqli->query($sql);
+
+				if ($result->num_rows > 0) {
+					// output data of each row
+					while($row = $result->fetch_assoc()) {
+						echo "<h1>". $row["Title"]. "</h1>" . "<p>" . $row["Caption"]. "</p>";
+					}
+				} else {
+				echo "0 results";
+				}
+			?>
             </div>
             </li>
                         
@@ -110,12 +145,18 @@ Released   : 20120817
             </a>
             <div class="tooltip">
 				<?php
-				$myFile = "../text/slider5caption.txt";
-				$fh = fopen($myFile, 'r');
-				$theData = fread($fh, filesize($myFile));
-				fclose($fh);
-				echo $theData;
-				?>
+				$sql = "SELECT Caption, Title, Photo FROM Slider WHERE ID = 5";
+				$result = $mysqli->query($sql);
+
+				if ($result->num_rows > 0) {
+					// output data of each row
+					while($row = $result->fetch_assoc()) {
+						echo "<h1>". $row["Title"]. "</h1>" . "<p>" . $row["Caption"]. "</p>";
+					}
+				} else {
+				echo "0 results";
+				}
+			?>
             </div>
             </li>
             </ul>
@@ -131,32 +172,50 @@ Released   : 20120817
 		<div id="content">
 			<div class="post">
 				<h2 class="title"><a href="#">Recent News </a></h2>
-				<div class="entry">
-					<div class="entry-title">
-					Balmoral Society Creates a Website!
-					</div>
-					<div class="date">
-					<p>October 17, 2014</p>
-					</div>
-					<p>Welcome to our brand new Website!
-					The purpose of the <strong>BCCS</strong> is to promote the sport of curling, primarily in
-						Edmonton, Alberta, and secondarily in Canada, by offering financial and other incentives for youth
-							curling programs held at the Saville Community Sports Centre (successor to the Balmoral Curling Club).</p>
-					<p></p>
-				</div>
+					<?php
+				$sql = "SELECT Title, Content, PostDate, ID FROM Post ORDER BY PostDate DESC LIMIT 3";
+				$result = $mysqli->query($sql);
+
+				if ($result->num_rows > 0) {
+					// output data of each row
+					while($row = $result->fetch_assoc()) {
+						echo "<div class='entry'>
+								<div class='entry-title'>" . $row["Title"]. "</div>
+								<div class='date'><p>" . $row["PostDate"] . "</p></div>
+								<p>" . Markdown::defaultTransform($row["Content"]) . "</p></div>";
+					}
+				} else {
+				echo "No Recent News";
+				}
+			?>			
+				
 			</div>
 			<div style="clear: both;">&nbsp;</div>
 		</div>
 		<!-- end #content -->
 		<div id="sidebar">
 			<div>
-				<h2>Recent Blog Posts</h2>
+				<h2>Recent Posts</h2>
 				<ul class="list-style1">
-					<li class="first"><a href="#">Balmoral Society Creates A Website! - <i>October 17, 2014</i></a></li>
-					<li><a href="#">Balmoral Funds New Program - <i>October 13, 2014</i></a></li>
-					<li><a href="#">Fundraising - <i>September 18, 2014</i> </a></li>
-					<li><a href="#">New Season - <i>September 1, 2014</i></a></li>
-
+					<?php
+				$sql = "SELECT Title, PostDate, ID FROM Post ORDER BY PostDate DESC LIMIT 6";
+				$result = $mysqli->query($sql);
+				$i = 0;
+				if ($result->num_rows > 0) {
+					// output data of each row
+					while($row = $result->fetch_assoc()) {
+						if ($i == 0) {
+							echo "<li class='first'><a href='news.php?id=" . $row["ID"] . "'>" . $row["Title"] . " - <i>" . $row["PostDate"] . "</i></a></li>";
+						}
+						else {
+							echo "<li><a href='news.php?id=" . $row["ID"] . "'>" . $row["Title"] . " - <i>" . $row["PostDate"] . "</i></a></li>";
+						}
+						$i += 1;
+					}
+				} else {
+				echo "No Recent News";
+				}
+			?>	
 				</ul>
 			</div>
 		</div>
@@ -171,10 +230,26 @@ Released   : 20120817
 		<div id="column1">
 			<h2>Contact Info</h2>
 			<ul class="list-style2">
-				<li class="first">(780) 123-4567</li>
-				<li>balmoral@balmoralsociety.ca</li>
-				<li>123 Saville Street NW</li>
-				<li>Edmonton, AB T6E 2E3</li>
+			<?php
+				$sql = "SELECT Address, AreaCode, Extension, Phone, Email, PostalCode, City, Province FROM Contact LIMIT 1";
+				$result = $mysqli->query($sql);
+				if ($result->num_rows > 0) {
+					// output data of each row
+					while($row = $result->fetch_assoc()) {
+						if(isset($row["Extension"])) {
+							echo "<li class='first'>(" . $row["AreaCode"] . ") " . $row["Phone"] . " Ext. " . $row["Extension"] . "</li>";
+						}
+						else {
+							echo "<li class='first'>(" . $row["AreaCode"] . ") " . $row["Phone"] . "</li>";
+						}
+							echo "<li>" . $row["Email"] . "</li>";
+							echo "<li>" . $row["Address"] . "</li>";
+							echo "<li>" . $row["City"] . ", " . $row["Province"] . " " . $row["PostalCode"] . "</li>";
+					}
+				} else {
+				echo "No Contact Info";
+				}
+			?>	
 
 			</ul>
 		</div>

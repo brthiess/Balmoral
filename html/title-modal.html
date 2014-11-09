@@ -1,0 +1,61 @@
+<?php
+include_once '../includes/db_connect.php';
+include_once '../includes/functions.php';
+ 
+sec_session_start();
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <title>Change Title</title>
+    <style>
+        body
+        {
+            font-family: Verdana;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <table cellpadding="2" cellspacing="10">
+        <tr>
+            <td>
+               New Title:
+            </td>
+            <td>
+                <input type="text" name="title" id="title"  style="width: 300px">
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+            </td>
+            <td align="center">
+                <input type="button" onclick="EnrollNowClick()" value="Submit" style="height: 30px;
+                    width: 100px;">
+            </td>
+        </tr>
+    </table>
+	
+	<?php
+		$sliderNumber = $_GET['number'];
+	?>
+    <script type="text/javascript">
+        function EnrollNowClick() {
+            PassValueToParentWindow();
+            window.parent.modalWin.CallCallingWindowFunction(0, 'User Enrolled Scucessfully');
+        }
+
+        function PassValueToParentWindow() {
+
+			var sliderNumber = <?php echo($sliderNumber); ?>;
+
+            var title = document.getElementById("title").value;
+			console.log(sliderNumber);
+			window.parent.ChangeTitle(title, sliderNumber);
+        }
+    </script>
+</body>
+</html>

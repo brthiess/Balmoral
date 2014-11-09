@@ -1,0 +1,7 @@
+CREATE TABLE Slider 
+(
+Number int,
+Caption varchar(255),
+Title varchar(255),
+Photo varchar(255)
+);

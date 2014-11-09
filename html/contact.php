@@ -1,3 +1,6 @@
+<?php
+include_once '../includes/db_connect.php';
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <!--
 Design by TEMPLATED
@@ -72,25 +75,32 @@ Released   : 20120817
 		<!-- end #content -->
 		<div id="sidebar">
 			<div id="contacts-container">
-				<div class="contact-icon">
-					<p><img src="../images/phone.png">
-					(780) 123-4567</p>
-				</div>
-				<div style="clear: both;">&nbsp;</div>
-				<div class="contact-icon">
-					<p><img src="../images/cell.gif">
-					(780) 321-4567</p>
-				</div>
-				<div style="clear: both;">&nbsp;</div>
-				<div class="contact-icon">
-					<p><img src="../images/mail.png">
-					balmoral@balmoralsociety.ca</p>
-				</div>
-				<div style="clear: both;">&nbsp;</div>
-				<div class="contact-icon">
-					<p><img src="../images/home.gif">
-					123 Easy Street NW, Edmonton, Alberta T6R 2E3</p>
-				</div>
+			
+			
+				<?php
+				$sql = "SELECT * FROM Contact LIMIT 1";
+				$result = $mysqli->query($sql);
+				if ($result->num_rows > 0) {
+					// output data of each row
+					while($row = $result->fetch_assoc()) {
+						$first3 = substr($row["Phone"], 0, 3);
+						$last4 = substr($row["Phone"], 3);
+						if(isset($row["Extension"])) {
+							echo "<div class='contact-icon'><p><img src='../images/phone.png'> (" . $row["AreaCode"] . ") " . $first3 . "-" . $last4 . " Ext. " . $row["Extension"] . "</p></div>";
+						}
+						else {
+							echo "<div class='contact-icon'><p><img src='../images/phone.png'> (" . $row["AreaCode"] . ") " . $first3 . "-" . $last4 . "</p></div>";
+						}
+							echo "<div style='clear: both;'>&nbsp;</div>";
+							echo "<div class='contact-icon'><p><img src='../images/mail.png'> " . $row["Email"] . "</p></div>";
+							echo "<div style='clear: both;'>&nbsp;</div>";
+							echo "<div class='contact-icon'><p><img src='../images/home.gif'> " . $row["Address"] . " " . $row["City"] . ", " . $row["Province"] . " " . $row["PostalCode"] . "</p></div>";
+							
+					}
+				} else {
+				echo "No Contact Info";
+				}
+			?>				
 			</div>
 			
 		</div>
@@ -106,10 +116,26 @@ Released   : 20120817
 		<div id="column1">
 			<h2>Contact Info</h2>
 			<ul class="list-style2">
-				<li class="first">(780) 123-4567</li>
-				<li>balmoral@balmoralsociety.ca</li>
-				<li>123 Saville Street NW</li>
-				<li>Edmonton, AB T6E 2E3</li>
+<?php
+				$sql = "SELECT Address, AreaCode, Extension, Phone, Email, PostalCode, City, Province FROM Contact LIMIT 1";
+				$result = $mysqli->query($sql);
+				if ($result->num_rows > 0) {
+					// output data of each row
+					while($row = $result->fetch_assoc()) {
+						if(isset($row["Extension"])) {
+							echo "<li class='first'>(" . $row["AreaCode"] . ") " . $row["Phone"] . " Ext. " . $row["Extension"] . "</li>";
+						}
+						else {
+							echo "<li class='first'>(" . $row["AreaCode"] . ") " . $row["Phone"] . "</li>";
+						}
+							echo "<li>" . $row["Email"] . "</li>";
+							echo "<li>" . $row["Address"] . "</li>";
+							echo "<li>" . $row["City"] . ", " . $row["Province"] . " " . $row["PostalCode"] . "</li>";
+					}
+				} else {
+				echo "No Contact Info";
+				}
+			?>	
 
 			</ul>
 		</div>

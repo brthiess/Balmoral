@@ -1,3 +1,7 @@
+<?php
+include_once '../includes/db_connect.php';
+include_once '../includes/functions.php';
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <!--
 Design by TEMPLATED
@@ -45,65 +49,23 @@ Released   : 20120817
 	<div id="splash" class="container"><span>The BCCS</span> is committed to the pursuit of excellence.  As a group we support our community through financial support and funding programs for youth. </div>
 	<div id="page" class="container">
 		<div id="content-about-us">
-			<div class="post-about-us">
-				<h2 class="title">Curling Equipment</h2>
-				<div class="entry">
-					<p>The Balmoral Curling Club Society (BCCS) currently owns and maintains the following equipment
+			
+			<?php
+				$sql = "SELECT ID, Title, Description FROM Program";
+				$result = $mysqli->query($sql);
 
-						for use in the SCSC:
-
-						<li> 144 Red Trefor Granite curling stones with blue horne granite running surfaces.</li>
-
-						<li> 144 curling rock handles</li>
-
-						<li> 6 curling rocks</li>
-
-						<li> 3 Bootmaster boot cleaners</li>
-
-						<li> Furniture for lobby</li>
-
-						<li> Computer software</li>
-				
-						<li> Digital Clock</li></p>
-
-				</div>
-			</div>
-			<div style="clear: both;">&nbsp;</div>
-			<div class="post-about-us">
-				<h2 class="title">Junior Team Program</h2>
-				<div class="entry">
-					<p>The purpose of the <strong>BCCS</strong> is to promote the sport of curling, primarily in
-
-						Edmonton, Alberta, and secondarily in Canada, by offering financial and other incentives for youth 
-
-							curling programs held at the Saville Community Sports Centre (successor to the Balmoral Curling Club).</p>
-					<p></p>
-				</div>
-			</div>
-			<div style="clear: both;">&nbsp;</div>
-			<div class="post-about-us">
-				<h2 class="title">Juvenile Team Program</h2>
-				<div class="entry">
-					<p>The purpose of the <strong>BCCS</strong> is to promote the sport of curling, primarily in
-
-						Edmonton, Alberta, and secondarily in Canada, by offering financial and other incentives for youth 
-
-							curling programs held at the Saville Community Sports Centre (successor to the Balmoral Curling Club).</p>
-					<p></p>
-				</div>
-			</div>
-			<div style="clear: both;">&nbsp;</div>
-			<div class="post-about-us">
-				<h2 class="title">U 14 School Field Trips</h2>
-				<div class="entry">
-					<p>The purpose of the <strong>BCCS</strong> is to promote the sport of curling, primarily in
-
-						Edmonton, Alberta, and secondarily in Canada, by offering financial and other incentives for youth 
-
-							curling programs held at the Saville Community Sports Centre (successor to the Balmoral Curling Club).</p>
-					<p></p>
-				</div>
-			</div>
+				if ($result->num_rows > 0) {
+					// output data of each row
+					while($row = $result->fetch_assoc()) {
+						echo "<div class='post-about-us'>
+						<h2 class='title'>". $row["Title"]. "</h2>"
+						. "<div class='description'><p>" . nl2br($row["Description"]) . "</p></div>
+						<div style='clear: both;'>&nbsp;</div></div>";
+					}
+				} else {
+				echo "0 results";
+				}
+			?>
 		</div>
 		<!-- end #content -->
 		<div style="clear: both;">&nbsp;</div>
@@ -116,10 +78,26 @@ Released   : 20120817
 		<div id="column1">
 			<h2>Contact Info</h2>
 			<ul class="list-style2">
-				<li class="first">(780) 123-4567</li>
-				<li>balmoral@balmoralsociety.ca</li>
-				<li>123 Saville Street NW</li>
-				<li>Edmonton, AB T6E 2E3</li>
+				<?php
+				$sql = "SELECT Address, AreaCode, Extension, Phone, Email, PostalCode, City, Province FROM Contact LIMIT 1";
+				$result = $mysqli->query($sql);
+				if ($result->num_rows > 0) {
+					// output data of each row
+					while($row = $result->fetch_assoc()) {
+						if(isset($row["Extension"])) {
+							echo "<li class='first'>(" . $row["AreaCode"] . ") " . $row["Phone"] . " Ext. " . $row["Extension"] . "</li>";
+						}
+						else {
+							echo "<li class='first'>(" . $row["AreaCode"] . ") " . $row["Phone"] . "</li>";
+						}
+							echo "<li>" . $row["Email"] . "</li>";
+							echo "<li>" . $row["Address"] . "</li>";
+							echo "<li>" . $row["City"] . ", " . $row["Province"] . " " . $row["PostalCode"] . "</li>";
+					}
+				} else {
+				echo "No Contact Info";
+				}
+			?>
 
 			</ul>
 		</div>

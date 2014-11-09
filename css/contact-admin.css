@@ -1,0 +1,33 @@
+h2 {
+	float:right;
+	font-size:14px;
+}
+
+#portlets img {
+	width:28px;
+	height:28px;
+
+}
+
+#areacode {
+	width:80px;
+
+}
+
+#phonenumber {
+	width:80px;
+
+}
+
+#extension {
+	width:80px;
+}
+
+.success {
+	float:left;
+}
+
+
+
+
+

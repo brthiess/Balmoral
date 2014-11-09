@@ -1,0 +1,43 @@
+.idTabs {
+	height: 2em;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.idTabs li
+{
+    background-color: gray);
+    float: left;
+    margin: 0 1px 0 0;
+    padding-left: 10px;
+}
+
+.idTabs a{
+    background-color: gray;
+    color: #008;
+    display: block;
+    float: left;
+    height: 2em;
+    line-height: 2em;
+    padding-right: 10px;
+    text-decoration: none;
+	}
+
+
+.idTabs li.current {
+    background-color: #48f;
+    background-position: 0 -60px;
+}
+
+.idTabs li.current a {
+    background-position: 100% -60px;
+    color: #fff;
+    font-weight: bold;
+}
+
+div.content {
+    border: #48f solid 3px;
+    clear: left;
+    padding: 1em;
+}

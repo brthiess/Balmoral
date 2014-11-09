@@ -1,0 +1,29 @@
+body {
+	background:white;
+	margin: 0;
+	padding: 0;
+}
+.header {
+	position:fixed;
+	height:40px;
+	width: 100%;
+	color: white;
+	font-family: 'Open Sans', sans-serif;
+	background: #3498db;
+	margin: 0;
+	padding:0;
+}
+
+.header h1 {
+	background: #2980b9;
+	height:100%;
+	font-size: 25px;
+	display:inline;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.header h2 {
+	float: right;
+	display:inline;
+}

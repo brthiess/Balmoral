@@ -1,3 +1,13 @@
+<?php
+include_once '../includes/db_connect.php';
+# Install PSR-0-compatible class autoloader
+spl_autoload_register(function($class){
+	require preg_replace('{\\\\|_(?!.*\\\\)}', DIRECTORY_SEPARATOR, ltrim($class, '\\')).'.php';
+});
+
+# Get Markdown class
+use \Michelf\Markdown;
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <!--
 Design by TEMPLATED
@@ -45,46 +55,50 @@ Released   : 20120817
 	<div id="splash" class="container"><span>The BCCS</span> is committed to the pursuit of excellence.  As a group we support our community through financial support and funding programs for youth. </div>
 	<div id="page" class="container">
 		<div id="content-about-us">
-			<div class="post-about-us">
-				<h2 class="title"><a href="#">Balmoral Society Creates A Website!</a></h2>
-				<div class="date">
-					October 17, 2014
-				</div>
-				<div class="entry">
-						We created a website!  Blah blah blah blah...
-				</div>
-			</div>
-			<div style="clear: both;">&nbsp;</div>
-			<div class="post-about-us">
-				<h2 class="title"><a href="#">Balmoral Funds New Program</a></h2>
-				<div class="date">
-					October 13, 2014
-				</div>
-				<div class="entry">
-					We are currently funding a new program for youth at the Saville.  This program will involve blah blah blah...
-				</div>
-			</div>
-			<div style="clear: both;">&nbsp;</div>
-			<div class="post-about-us">
-				<h2 class="title"><a href="#">Fundraising</a></h2>
-				<div class="date">
-					September 18, 2014
-				</div>
-				<div class="entry">
-							We are currently hosting a casino night on blah blah..	
-				</div>
-			</div>
-			<div style="clear: both;">&nbsp;</div>
-			<div class="post-about-us">
-				<h2 class="title"><a href="#">New Season</a></h2>
-				<div class="date">
-					September 1, 2014
-				</div>
-				<div class="entry">
-						It is a brand new season!  Along with this new season, comes the need for more blah blah...
-				</div>
-			</div>
-			<div style="clear: both;">&nbsp;</div>
+			
+					<?php
+				if (isset($_GET["identification"])) {
+					$i = $_GET["identification"];
+					$nextpage = $i;
+				}
+				else {
+					$i = 0;
+					$nextpage = 0;
+				}
+				$max = $i + 3;
+				$base = 0;
+				$sql = "SELECT ID, Content, Title, PostDate FROM Post ORDER BY PostDate DESC";
+				$result = $mysqli->query($sql);
+
+				if ($result->num_rows > 0) {
+					// output data of each row
+					while($base < $i) {
+						$row = $result->fetch_assoc();
+						$base += 1;
+					}
+					while(($i < $max) && $row = $result->fetch_assoc()) {
+						echo "<div class='post-about-us'><h2 class='title'><a href='news.php?article-number=" . $row["ID"] . "'>" . $row["Title"] . "</a></h2>
+						<div class='date'>". $row["PostDate"]. "</div>
+						<div class='entry'>" . Markdown::defaultTransform($row["Content"]) . "</div>
+						</div>
+						<div style='clear:both;'>&nbsp;</div>";
+						$i += 1;
+					}
+				} else {
+				echo "No blog posts";
+				}
+				if (isset($_GET["identification"])) {
+					if($_GET["identification"] > 0) {
+						echo "<a href='news.php?identification='" . strval($nextpage - 3) . "'> Previous Page</a>";
+					}
+				}				
+				if ($result->fetch_assoc() != null) {
+					
+					echo "<a href='news.php?identification=" . strval($nextpage + 3) . "'> Next Page</a>";
+				}
+			?>
+		
+
 		</div>
 		<!-- end #content -->
 		<div style="clear: both;">&nbsp;</div>
@@ -97,10 +111,26 @@ Released   : 20120817
 		<div id="column1">
 			<h2>Contact Info</h2>
 			<ul class="list-style2">
-				<li class="first">(780) 123-4567</li>
-				<li>balmoral@balmoralsociety.ca</li>
-				<li>123 Saville Street NW</li>
-				<li>Edmonton, AB T6E 2E3</li>
+				<?php
+				$sql = "SELECT Address, AreaCode, Extension, Phone, Email, PostalCode, City, Province FROM Contact LIMIT 1";
+				$result = $mysqli->query($sql);
+				if ($result->num_rows > 0) {
+					// output data of each row
+					while($row = $result->fetch_assoc()) {
+						if(isset($row["Extension"])) {
+							echo "<li class='first'>(" . $row["AreaCode"] . ") " . $row["Phone"] . " Ext. " . $row["Extension"] . "</li>";
+						}
+						else {
+							echo "<li class='first'>(" . $row["AreaCode"] . ") " . $row["Phone"] . "</li>";
+						}
+							echo "<li>" . $row["Email"] . "</li>";
+							echo "<li>" . $row["Address"] . "</li>";
+							echo "<li>" . $row["City"] . ", " . $row["Province"] . " " . $row["PostalCode"] . "</li>";
+					}
+				} else {
+				echo "No Contact Info";
+				}
+			?>	
 
 			</ul>
 		</div>
