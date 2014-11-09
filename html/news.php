@@ -89,7 +89,7 @@ Released   : 20120817
 				}
 				if (isset($_GET["identification"])) {
 					if($_GET["identification"] > 0) {
-						echo "<a href='news.php?identification='" . strval($nextpage - 3) . "'> Previous Page</a>";
+						echo "<a href='news.php?identification=" . strval($nextpage - 3) . "'> Previous Page</a>";
 					}
 				}				
 				if ($result->fetch_assoc() != null) {
