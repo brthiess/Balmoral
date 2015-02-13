@@ -50,6 +50,11 @@ html, body {
 	overflow:hidden;
 	height:355px;
 }
+
+#mask img{
+	width:780px;
+	height:360px;
+}
 #slider ul {
 	margin:0;
 	padding:0;

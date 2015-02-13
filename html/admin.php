@@ -1,7 +1,6 @@
 <?php
 include_once '../includes/db_connect.php';
 include_once '../includes/functions.php';
-include_once 'upload.form.php';
  
 sec_session_start();
 ?>
@@ -76,6 +75,7 @@ sec_session_start();
  modalWin.SetLoadingImagePath("../images/loading.gif");
  modalWin.SetCloseButtonImagePath("../images/remove.png");
 
+
 function ShowEditTitlePage(sliderNumber){
  modalWin.ShowURL('title-modal.php?number=' + sliderNumber,168,470,'Change Title',null);
  }
@@ -85,6 +85,8 @@ function ShowEditTitlePage(sliderNumber){
  modalWin.ShowURL('caption-modal.php?number=' + sliderNumber,193,490,'Change Caption',null);
  
  }
+
+ 
   function ChangeCaption(caption, sliderNumber) {
     console.log(sliderNumber);
 
@@ -140,7 +142,11 @@ function ShowEditTitlePage(sliderNumber){
 					// output data of each row
 					while($row = $result->fetch_assoc()) {
 						echo "<h3>Slider " . $row["ID"] . "</h3><div>
-						<div class='button' onclick='ShowNewPage()' id='change-photo'>Change Photo</div> <img src='../images/slider" . $row["ID"] . ".jpg'>
+						<form action='upload-photo.php?number=" . $row["ID"] . "' method='post' enctype='multipart/form-data'>
+						<input class='button' type='file' name='fileToUpload' id'fileToUpload'>
+						<input  class='button'  type='submit' value='Upload Image' name='submit'>
+						</form> <img src='../images/slider" . $row["ID"] . ".jpg'>
+
 						<div class='button' onclick='ShowEditTitlePage(" . $row["ID"] . ")'>Change Title</div><h1>" . $row["Title"] . "</h1>
 						<div class='button' onclick='ShowEditCaptionPage(" . $row["ID"] . ")'>Change Caption</div><p>" . $row["Caption"] . "</p></div>";
 					}
